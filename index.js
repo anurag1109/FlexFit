@@ -3,7 +3,7 @@ const { connection } = require("./config/db");
 const cors = require("cors");
 const { userRoute } = require("./controller/user.route");
 const { bookingRoute } = require("./controller/booking.route");
-const { authRoute } = require("./controller/auth.routes");
+// const { authRoute } = require("./controller/auth.routes");
 require("dotenv").config();
 
 const app = express();
@@ -11,9 +11,9 @@ app.use(express.json());
 app.use(cors());
 
 //---image upload
-app.use(express.static('public'));
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 ////- image upload end
 
 app.get("/", (req, res) => {
@@ -28,43 +28,43 @@ app.use("/user", userRoute);
 
 //SWAGGER________________________________________________________________
 
-const swaggerJSDoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
-const options = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Node JS API Project for FlexFit",
-      version: "1.0.0",
-      description:
-        "About : - Documentation of application FlexFit which is a Fitness class Booking application in which you can hire Top quality Trainers or become a Trainer itself.",
-      license: {
-        name: "FlexFit",
-      },
-      contact: {
-        name: "FlexFit",
-        url: "flexfit.com",
-        email: "flexfit@gmail.com",
-      },
-    },
-    servers: [
-      {
-        url: `http://localhost:${process.env.serverPort}`,
-      },
-    ],
-  },
-  apis: ["./controller/*.js"],
-};
-const swaggerSpec = swaggerJSDoc(options);
-app.use("/apidocs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// const swaggerJSDoc = require("swagger-jsdoc");
+// const swaggerUi = require("swagger-ui-express");
+// const options = {
+//   definition: {
+//     openapi: "3.0.0",
+//     info: {
+//       title: "Node JS API Project for FlexFit",
+//       version: "1.0.0",
+//       description:
+//         "About : - Documentation of application FlexFit which is a Fitness class Booking application in which you can hire Top quality Trainers or become a Trainer itself.",
+//       license: {
+//         name: "FlexFit",
+//       },
+//       contact: {
+//         name: "FlexFit",
+//         url: "flexfit.com",
+//         email: "flexfit@gmail.com",
+//       },
+//     },
+//     servers: [
+//       {
+//         url: `http://localhost:${process.env.serverPort}`,
+//       },
+//     ],
+//   },
+//   apis: ["./controller/*.js"],
+// };
+// const swaggerSpec = swaggerJSDoc(options);
+// app.use("/apidocs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //Listen to server________________________________________________________________
-
-app.listen(process.env.serverPort, async () => {
+const PORT = process.env.PORT || 4500;
+app.listen(PORT, async () => {
   try {
     await connection;
     console.log("Connected to DB");
-    console.log("Server: " + process.env.serverPort);
+    console.log("Server: " + PORT);
   } catch (error) {
     console.log("Error: " + error.message);
   }
