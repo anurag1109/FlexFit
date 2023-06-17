@@ -1,33 +1,33 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const bookingSchema = new mongoose.Schema({
-  Trainer: {
+  trainer: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
-    required: true
+    ref: "user",
+    required: true,
   },
   client: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
-    required: true
+    ref: "user",
+    required: true,
   },
   start_time: {
     type: Date,
-    required: true
+    required: true,
   },
   end_time: {
     type: Date,
-    required: true
+    required: true,
   },
   status: {
     type: String,
-    enum: ['accepted', 'rejected', 'pending'],
-    default: 'pending'
-  }
+    enum: ["accepted", "rejected", "pending"],
+    default: "pending",
+  },
 });
-const BookingModel = mongoose.model('Booking', bookingSchema);
+const BookingModel = mongoose.model("Booking", bookingSchema);
 module.exports = {
-  BookingModel
-}
+  BookingModel,
+};
 // {
 //   "photographerId":"6457a99a2761a3946757257a",
 //   "startTime":"2023-06-01T15:00:00.000Z",
