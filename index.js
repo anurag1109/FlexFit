@@ -1,35 +1,29 @@
 const express = require("express");
 const { connection } = require("./config/db");
+const { logger } = require("./middlewares/logger.middleware");
+const { userRoute } = require("./routes/user.routes");
+// const swaggerJSDoc = require("swagger-jsdoc");
+// const swaggerUi = require("swagger-ui-express");
+const { BookingRouter } = require("./routes/booking.routes");
+// const { authRoute } = require("./routes/auth.routes");
 const cors = require("cors");
-const { userRoute } = require("./controller/user.route");
-const { bookingRoute } = require("./controller/booking.route");
-// const { authRoute } = require("./controller/auth.routes");
 require("dotenv").config();
-
 const app = express();
-app.use(express.json());
 app.use(cors());
-
-//---image upload
+app.use(express.json());
+app.use(logger);
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
-////- image upload end
-
+// port 4500
 app.get("/", (req, res) => {
-  res.send({
-    "<backendlink>/":
-      "default route (add all routes here to show at home page of backend server )",
-  });
+  try {
+    res.send({ ok: true, msg: "Welcome to Backend of FlexFit" });
+  } catch (error) {
+    res.send({ ok: false, msg: error.message });
+  }
 });
-
-app.use("/booking", bookingRoute);
 app.use("/user", userRoute);
-
-//SWAGGER________________________________________________________________
-
-// const swaggerJSDoc = require("swagger-jsdoc");
-// const swaggerUi = require("swagger-ui-express");
 // const options = {
 //   definition: {
 //     openapi: "3.0.0",
@@ -37,35 +31,38 @@ app.use("/user", userRoute);
 //       title: "Node JS API Project for FlexFit",
 //       version: "1.0.0",
 //       description:
-//         "About : - Documentation of application FlexFit which is a Fitness class Booking application in which you can hire Top quality Trainers or become a Trainer itself.",
+//         "About : - This is a Trainer Booking application in which you can hire Top quality Trainer or become a Trainer and this is documentation of application FlexFit.",
 //       license: {
 //         name: "FlexFit",
 //       },
 //       contact: {
 //         name: "FlexFit",
-//         url: "flexfit.com",
-//         email: "flexfit@gmail.com",
+//         url: "FlexFit.com",
+//         email: "flex@gmail.com",
 //       },
 //     },
 //     servers: [
 //       {
-//         url: `http://localhost:${process.env.serverPort}`,
+//         url: "http://localhost:3000/",
 //       },
 //     ],
 //   },
-//   apis: ["./controller/*.js"],
+//   apis: ["./routes/*.js"],
 // };
 // const swaggerSpec = swaggerJSDoc(options);
-// app.use("/apidocs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// app.use("/auth", authRoute);
+app.use("/book", BookingRouter);
 
-//Listen to server________________________________________________________________
-const PORT = process.env.PORT || 4500;
-app.listen(PORT, async () => {
+app.listen(process.env.PORT, async () => {
   try {
     await connection;
-    console.log("Connected to DB");
-    console.log("Server: " + PORT);
+    console.log("Connected to MongoDb Database");
+    // await client.connect();
+    // console.log("Connected to Redis Database");
   } catch (error) {
-    console.log("Error: " + error.message);
+    console.log(error.message);
+    console.log("Database not Connected");
   }
+  console.log(`Server is running at port ${process.env.PORT}`);
 });
