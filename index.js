@@ -51,7 +51,8 @@ app.use("/user", userRoute);
 // };
 // const swaggerSpec = swaggerJSDoc(options);
 // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-// app.use("/auth", authRoute);
+
+app.use("/auth", authRoute);
 app.use("/book", BookingRouter);
 
 app.listen(process.env.PORT, async () => {
