@@ -36,7 +36,10 @@ BookingRouter.post("/book", authMiddleWare, async (req, res) => {
     });
     // Save the booking to the database
     await booking.save();
-    await sendEmail(trainer.email, "Someone has send you booking");
+    await sendEmail(
+      trainer.email,
+      `Someone has send you booking ${new Date()}`
+    );
     return res
       .status(201)
       .json({ message: "Booking request sent successfully", ok: true });

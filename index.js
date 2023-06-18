@@ -7,6 +7,7 @@ const { userRoute } = require("./routes/user.routes");
 const { BookingRouter } = require("./routes/booking.routes");
 // const { authRoute } = require("./routes/auth.routes");
 const cors = require("cors");
+const { sendEmail } = require("./helper");
 require("dotenv").config();
 const app = express();
 app.use(cors());
@@ -22,6 +23,15 @@ app.get("/", (req, res) => {
   } catch (error) {
     res.send({ ok: false, msg: error.message });
   }
+});
+app.get("/send", (req, res) => {
+  sendEmail("bittu.anurag123+1@gmail.com", 1234566)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((error) => {
+      res.send(error);
+    });
 });
 app.use("/user", userRoute);
 // const options = {
