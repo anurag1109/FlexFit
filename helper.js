@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-module.exports.sendEmail = (email, varificationCode) => {
+module.exports.sendEmail = (email, msg) => {
   return new Promise((resolve, reject) => {
     var transporter = nodemailer.createTransport({
       service: "gmail",
@@ -13,7 +13,7 @@ module.exports.sendEmail = (email, varificationCode) => {
       from: process.env.EMAIL_ID,
       to: email,
       subject: "Varification",
-      text: `varification code is ${varificationCode} `,
+      text: `${msg} `,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -24,7 +24,7 @@ module.exports.sendEmail = (email, varificationCode) => {
         resolve({
           info: info.response,
           status: true,
-          varificationCode: varificationCode,
+          msg: msg,
         });
       }
     });

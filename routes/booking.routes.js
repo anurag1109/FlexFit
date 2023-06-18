@@ -38,7 +38,7 @@ BookingRouter.post("/book", authMiddleWare, async (req, res) => {
     await booking.save();
     await sendEmail(
       trainer.email,
-      `Someone has send you booking ${new Date()}`
+      `A Request has been sent to you at ${new Date()}. Please check your DashBoard`
     );
     return res
       .status(201)
