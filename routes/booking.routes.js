@@ -7,6 +7,7 @@ const { MeetingModel } = require("../models/meeting.model");
 const { authMiddleWare } = require("../middlewares/jwt.middleware");
 const { checkRole } = require("../routes/user.routes");
 const moment = require("moment");
+const { sendEmail } = require("../helper");
 BookingRouter.get("/", async (req, res) => {
   try {
     let data = await BookingModel.find().populate("trainer client", "name");
@@ -18,7 +19,6 @@ BookingRouter.get("/", async (req, res) => {
 });
 BookingRouter.post("/book", authMiddleWare, async (req, res) => {
   const { trainerId, startTime, endTime } = req.body;
-
   try {
     // Check if trainer and client exist in the database
     const trainer = await UserModel.findById(trainerId);
@@ -36,6 +36,7 @@ BookingRouter.post("/book", authMiddleWare, async (req, res) => {
     });
     // Save the booking to the database
     await booking.save();
+    await sendEmail(trainer.email, "Someone has send you booking");
     return res
       .status(201)
       .json({ message: "Booking request sent successfully", ok: true });
